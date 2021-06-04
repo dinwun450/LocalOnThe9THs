@@ -1,0 +1,92 @@
+body {
+    background: url("bg.jpg");
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    color: #fff;
+}
+
+.float {
+    position: absolute;
+    min-height: 100vh;
+    min-width: 100vw;
+    top: 0;
+    bottom: 0;
+    z-index: 5;
+}
+
+.navbar {
+    box-shadow: 20px 20px 50px rgba(0,0,0,0.5);
+    background: rgba(255,255,255,0.1);
+    width: 60vw;
+    color: white;
+    position: relative;
+    top: 100px;
+    left: 30px;
+    border-radius: 15px;
+}
+
+.navbar a {
+    color: white;
+    font-size: 25px;
+}
+
+.container {
+    width: 70vw;
+    height: 30vw;
+    box-shadow: 20px 20px 50px rgba(0,0,0,0.5);
+    background: rgba(255,255,255,0.1);
+    position: relative;
+    top: 110px;
+    right: 150px;
+    border-radius: 15px;
+}
+
+h1 {
+    font-weight: 200;
+}
+
+.now {
+    width: 20vw;
+    height: 20vw;
+    box-shadow: 20px 20px 50px rgba(0,0,0,0.5);
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    position: relative;
+    left: 50px;
+}
+
+#icon {
+    font-size: 5vw;
+}
+
+#temp {
+    font-size: 5vw;
+}
+
+.two {
+    font-size: 2vw;
+    position: relative;
+    top: 40px;
+}
+
+.redirect {
+    color: white;
+    position: relative;
+    top: 30px;
+}
+
+a {
+    color: white;
+}
+
+a:hover {
+    color: white;
+    outline: none;
+}
+
+.wi-owm-800 {
+    color: yellow;
+}

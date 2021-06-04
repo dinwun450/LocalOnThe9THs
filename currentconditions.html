@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Conditions</title>
+    <!-- bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+	<!-- fontawesome -->
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<!-- weather icons -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css">
+	<!-- stylesheet -->
+	<link rel="stylesheet" type="text/css" href="./css/currentconditions.css">
+</head>
+<body>
+    <div class="float">
+        <nav class="navbar">
+            <a href="#" class="navbar-brand">
+                <i class="fa fa-sun-o" aria-hidden="true"></i>
+                <strong>My</strong>WeaApp | <span id="location">N/A</span>
+            </a>
+            <span id="date" class="lead">8:59 AM</span>
+        </nav>
+        <div class="container">
+            <nav>
+                <h1><span class="no">Now</span></h1>
+            </nav>
+            <div class="row">
+                <div class="col">
+                    <div class="now text-center">
+                        <div id="icon"><i class="wi wi-owm-200"></i></div>
+                        <div id="temp">69<i class="wi wi-fahrenheit"></i></div>
+                    </div>
+                </div>
+                <div class="two col">
+                    <div id="desc">Thunderstorm</div>
+                    <div id="wind">WIND: 5 m/h</div>
+                    <div id="deg">DEGREE: 4&deg;</div>
+                    <div id="feelslike">FEELS LIKE: 65<i class="wi wi-fahrenheit"></i></div>
+                </div>
+            </div>
+            <div class="redirect">
+                <p><a href="#">Return to Main</a> | <a href="file:///media/fuse/crostini_c97cf7b583177c4d66d07b57c3855672566bfe04_termina_penguin/Web/MyWeaApp/New/currentconditionstwo/currentconditionstwo.html">Next</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="js/currentconditions.js"></script>
+</body>
+</html>
