@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radar</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="./css/radar.css">
+    <link rel='stylesheet' type='text/css' href='https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.13.0/maps/maps.css'>
+    <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.13.0/maps/maps-web.min.js"></script>
+    <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.13.0/services/services-web.min.js"></script>
+</head>
+<body>
+    <div class="float">
+        <nav class="navbar">
+            <a href="#" class="navbar-brand">
+                <i class="fa fa-sun-o" aria-hidden="true"></i>
+                <strong>My</strong>WeaApp | <span id="location">N/A</span>
+            </a>
+            <span id="date" class="lead">9:11 PM</span>
+        </nav>
+        <div class="container">
+            <nav>
+                <h1><span class="no">Radar</span></h1>
+            </nav>
+            <div style="width: 55vw; height: 20vw;" id="map"></div>
+            <div class="redirect">
+                <p><a href="file:///media/fuse/crostini_c97cf7b583177c4d66d07b57c3855672566bfe04_termina_penguin/Web/MyWeaApp/New/currentconditionstwo/currentconditionstwo.html">Back</a> | <a href="file:///media/fuse/crostini_c97cf7b583177c4d66d07b57c3855672566bfe04_termina_penguin/Web/MyWeaApp/New/forecasttoday/forecasttoday.html">Next</a></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.onload = function () {
+            var ipUrl = "https://ipinfo.io/json";
+            var location = document.getElementById("location");
+
+            httpReqIpAsync(ipUrl);
+
+            function httpReqIpAsync(url, callback) {
+                var httpReqIp = new XMLHttpRequest();
+                httpReqIp.open("GET", url, true);
+                httpReqIp.onreadystatechange = function() {
+                    if(httpReqIp.readyState == 4 && httpReqIp.status == 200) {
+                        var jsonIp = JSON.parse(httpReqIp.responseText)
+                        var ip = jsonIp.ip;
+                        var city = jsonIp.city;
+                        location.innerHTML = `${city}`;
+                        var lat = jsonIp.loc.split(",")[0];
+                        var lon = jsonIp.loc.split(",")[1];
+                        console.log(lat+" "+lon)
+                    }
+                }
+                httpReqIp.send();
+            }
+
+            function showTime() {
+                var date = new Date();
+                var h = date.getHours();
+                var m = date.getMinutes();
+                var s = date.getSeconds();
+                var session = "AM";
+
+                if(h == 0) {
+                    h = 12;
+                }
+
+                if(h > 12) {
+                    h = h - 12;
+                    session = "PM"
+                }
+
+                h = (h < 10) ? "0" + h : h;
+                m = (m < 10) ? "0" + m : m;
+                s = (s < 10) ? "0" + s : s;
+
+                var time = h + ":" + m + ":" + s + " " + session;
+                document.getElementById("date").innerHTML = time;
+
+                setTimeout(showTime, 1000);
+            }
+
+            showTime();
+
+            var SF = {lat: 37.548271, lng: -121.988571}; // This place would be a default to set on...
+            var map = tt.map({
+                key: 'G5UxdGCGqx7ieibYNK8va0O5LBoNE6TD',
+                container: 'map',
+                center: SF,
+                zoom: 5
+            })
+
+            var cloudSource = {
+                type: 'raster',
+                tiles: ['https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=0e677ad9097d32458226a1c86a7a9c5e'],
+                tileSize: 256,
+                minZoom: 0,
+                maxZoom: 12,
+                attribution: 'OpenWeatherMap.Org'
+            }
+
+            var rainSource = {
+                type: 'raster',
+                tiles: ['https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=0e677ad9097d32458226a1c86a7a9c5e'],
+                tileSize: 256,
+                minZoom: 0,
+                maxZoom: 12,
+                attribution: 'OpenWeatherMap.Org'
+            }
+
+            var cloudLayer = {
+                'id': 'cloud_layer',
+                'type': 'raster',
+                'source': 'cloud_source',
+                'layout': { 'visibility' : 'visible' }
+            }
+
+            var rainLayer = {
+                'id': 'rain_layer',
+                'type': 'raster',
+                'source': 'rain_source',
+                'layout': { 'visibility' : 'visible' }
+            }
+
+            var windSource = {
+                type: 'raster',
+                tiles: ['https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=0e677ad9097d32458226a1c86a7a9c5e'],
+                tileSize: 256,
+                minZoom: 0,
+                maxZoom: 12,
+                attribution: 'OpenWeatherMap.Org'
+            }
+
+            var windLayer = {
+                'id': 'wind_layer',
+                'type': 'raster',
+                'source': 'wind_source',
+                'layout': { 'visibility' : 'visible' }
+            }
+
+            var tempSource = {
+                type: 'raster',
+                tiles: ['https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=0e677ad9097d32458226a1c86a7a9c5e'],
+                tileSize: 256,
+                minZoom: 0,
+                maxZoom: 12,
+                attribution: 'OpenWeatherMap.Org'
+            }
+
+            var tempLayer = {
+                'id': 'temp_layer',
+                'type': 'raster',
+                'source': 'temp_source',
+                'layout': { 'visibility' : 'visible' }
+            }
+
+            map.on('load', function(){
+                map.addSource('cloud_source', cloudSource)
+                map.addLayer(cloudLayer)
+
+                map.addSource('rain_source', rainSource)
+                map.addLayer(rainLayer)
+
+                map.addSource('wind_source', windSource)
+                map.addLayer(windLayer)
+
+                map.addSource('temp_source', tempSource)
+                map.addLayer(tempLayer)
+            })
+
+            map.on('click', function(event) {
+                console.log(event.lngLat)
+                weatherForCityAround(event.lngLat)
+            })
+
+            function CreateDOM(city) {
+                let div = document.createElement('div')
+
+                let temp = city.main.temp
+                let tempFahren = Math.round(1.8 * (temp - 273) + 32)
+                let all = document.createTextNode(tempFahren.toFixed(0) + ' F ')
+
+                div.appendChild(all)
+
+                let code = city.weather[0].icon
+                let image = document.createElement('img')
+                image.src = 'http://openweathermap.org/img/wn/' + code + '@2x.png'
+                div.appendChild(image)
+
+                let description = document.createTextNode(city.weather[0].description)
+                div.appendChild(description)
+
+                return div
+            }
+
+            async function weatherForCityAround(lngLat) {
+                var url = 'https://api.openweathermap.org/data/2.5/find?lat={lat}&lon={lon}&cnt=5&appid=0e677ad9097d32458226a1c86a7a9c5e'
+                url = url.replace('{lat}', lngLat.lat)
+                url = url.replace('{lon}', lngLat.lng)
+                let weatherResponse = await fetch(url)
+                let weatherData = await weatherResponse.json()
+                console.log(weatherData)
+                weatherData.list.forEach(element => {
+                    var popup = new tt.Popup().setDOMContent(CreateDOM(element)).setLngLat(element.coord).addTo(map)
+                });
+            }
+        }
+    </script>
+</body>
+</html>
